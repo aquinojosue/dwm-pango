@@ -1,6 +1,6 @@
 /* See LICENSE file for copyright and license details. */
-#include "X11/XF86keysym.h"
-#include "push.c"
+#include <X11/XF86keysym.h> 
+/*#include "push.c"*/
 /* appearance */
 #define BOTTOM_BAR_HEIGHT    13
 /*static const char font[]            = "Termsyn 11";*/
@@ -57,10 +57,15 @@ static const Layout layouts[] = {
 /* commands */
 static const char *dmenucmd[] = { "dmenu_run", "-fn", font, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL }; 
 static const char *termcmd[]  = { "uxterm", NULL };
-
+static const char *mutecmd[] = { "amixer", "-q", "sset", "Master", "toggle", NULL };
+static const char *volupcmd[] = { "amixer", "-q", "sset", "Master", "5-", "unmute", NULL };
+static const char *voldowncmd[] = { "amixer", "-q", "sset", "Master", "5+", "unmute", NULL };
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
+	{ 0,                       0x1008ff12,      spawn,          {.v = mutecmd } },
+	{ 0,                       0x1008ff11,      spawn,          {.v = volupcmd } },
+	{ 0,                       0x1008ff13,      spawn,          {.v = voldowncmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
