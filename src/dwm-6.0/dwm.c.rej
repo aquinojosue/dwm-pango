@@ -1,0 +1,21 @@
+--- dwm.c.orig	2011-12-19 18:19:17.275713017 +0100
++++ dwm.c	2011-12-19 18:20:58.811158588 +0100
+@@ -2115,8 +2147,9 @@
+ void
+ view(const Arg *arg) {
+ 	unsigned int i;
++  unsigned int stag = selmon->tagset[selmon->seltags] & scratchpadtag;
+ 
+-	if((arg->ui & TAGMASK) == selmon->tagset[selmon->seltags])
++	if((arg->ui & TAGMASK) == (selmon->tagset[selmon->seltags] & TAGMASK))
+ 		return;
+ 	selmon->seltags ^= 1; /* toggle sel tagset */
+ 	if(arg->ui & TAGMASK) {
+@@ -2133,6 +2166,7 @@
+ 		selmon->curtag^= selmon->prevtag;
+ 		selmon->prevtag= selmon->curtag ^ selmon->prevtag;
+ 	}
++	selmon->tagset[selmon->seltags] |= stag;
+ 	selmon->lt[selmon->sellt]= selmon->lts[selmon->curtag];
+ 	focus(NULL);
+ 	arrange(selmon);
