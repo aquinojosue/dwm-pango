@@ -1,10 +1,10 @@
 /* See LICENSE file for copyright and license details. */
-#include <X11/XF86keysym.h> 
-/*#include "push.c"*/
+#include "X11/XF86keysym.h"
+#include "push.c"
 /* appearance */
 #define BOTTOM_BAR_HEIGHT    13
 /*static const char font[]            = "Termsyn 11";*/
-static const char font[]            = "Caviar Dreams 10";
+static const char font[]            = "Cantarell 8";
 static const char normbordercolor[] = "#0c0d0e";
 static const char normbgcolor[]     = "#0c0d0e";
 static const char normfgcolor[]     = "#7f8f9f";
@@ -19,7 +19,7 @@ static Bool topbar                  = True;     /* False means bottom bar */
 /*static const char *tags[] = { "À", "Î", "Â", "Ã", "Ä", "Å", "Æ", "Ç", "È " };*/
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" }; 
+static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
 static const Rule rules[] = {
 	/* class      instance    title       tags mask     isfloating   monitor */
@@ -56,16 +56,14 @@ static const Layout layouts[] = {
 
 /* commands */
 static const char *dmenucmd[] = { "dmenu_run", "-fn", font, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL }; 
-static const char *termcmd[]  = { "uxterm", NULL };
-static const char *mutecmd[] = { "amixer", "-q", "sset", "Master", "toggle", NULL };
-static const char *volupcmd[] = { "amixer", "-q", "sset", "Master", "5-", "unmute", NULL };
-static const char *voldowncmd[] = { "amixer", "-q", "sset", "Master", "5+", "unmute", NULL };
+static const char *termcmd[]  = { "urxvt", NULL };
+static const char *volumedown[] = { "amixer", "-q", "set", "Master", "2%-", "unmute", NULL };
+static const char *volumeup[]   = { "amixer", "-q", "set", "Master", "2%+", "unmute", NULL };
+static const char *mute[]       = { "amixer", "-q", "set", "Master", "toggle", NULL };
+
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
-	{ 0,                       0x1008ff12,      spawn,          {.v = mutecmd } },
-	{ 0,                       0x1008ff11,      spawn,          {.v = volupcmd } },
-	{ 0,                       0x1008ff13,      spawn,          {.v = voldowncmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
@@ -89,6 +87,9 @@ static Key keys[] = {
 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
+	{ 0, XF86XK_AudioLowerVolume,   spawn,        { .v = volumedown } },
+	{ 0, XF86XK_AudioRaiseVolume,   spawn,        { .v = volumeup } }, 
+	{ 0, XF86XK_AudioMute,          spawn,        { .v = mute } }, 
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
